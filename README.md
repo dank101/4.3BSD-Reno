@@ -1,0 +1,359 @@
+4.3BSD-Reno
+===========
+
+The source of the BSD version moving to POSIX complacence 
+
+Original Release Message:
+
+Dear Colleague:
+
+     We are happy to send you information about  our  June,  1990
+test  release  of  the  Fourth  Berkeley  Software  Distribution,
+4.3BSD-Reno.  This release represents an  intermediate  point  in
+the  development of 4.4BSD; several new facilities have been com-
+pleted and are ready for external use, while other new facilities
+slated  for the 4.4BSD release have not yet been integrated.  Our
+goal in making this release available is to get feedback  on  any
+problems  in  the design or implementation of the new facilities,
+as well as to allow adventurous sites  to  gain  experience  with
+these portions of 4.4BSD.
+
+     This distribution is NOT intended to be used  on  production
+systems;  nor  is  it intended for sites without sufficient local
+expertise to find and fix any problems that are encountered.   It
+is  intended to be used to provide an advance look at some of the
+facilities and interfaces that we will be distributing in 4.4BSD.
+We  are  interested  in getting feedback on the problems that you
+find and also any compatibility problems that you  anticipate  in
+trying  to convert your applications to run on this release.  The
+interfaces in this release will  change  before  the  release  of
+4.4BSD (at least in part based on feedback from this test group).
+Thus, you should not expect applications ported to  this  release
+to work unchanged on 4.4BSD.
+
+     Unlike past test releases, 4.3BSD-Reno is  being  made  gen-
+erally  available  to  4.3BSD  licensees,  and 4.3BSD-Reno may be
+redistributed and used in released  products  (within  the  usual
+licensing  constraints).   However,  you will have to upgrade any
+code that you use from 4.3BSD-Reno to the 4.4BSD code within  one
+year  of  the release of 4.4BSD.  We appreciate your help in this
+debugging effort and look forward to hearing  from  you.   Please
+send   your  comments  to  reno43-bugs@okeeffe.Berkeley.EDU.   We
+regret that changes documents are not available; the next section
+outlines the major changes available in 4.3BSD-Reno.
+
+     The license to 4.3BSD-Reno is  simply  an  Addendum  to  the
+4.3BSD  License.   Sites without a 4.3BSD license may obtain both
+4.3BSD and 4.3BSD-Reno simultaneously, but  must  sign  a  4.3BSD
+license as well as the Addendum.  Contact the distribution office
+for 4.3BSD licensing information.  4.3BSD is  available  only  to
+sites with UNIX/32V, System  III, or  System  V  source  licenses
+with  AT&T.   We  are  actively working to decrease the amount of
+AT&T code in the system.  We expect that we will provide a subset
+of  4.4BSD  without  the  AT&T code to sites without requiring an
+AT&T license.  However, we are not prepared to make that determi-
+nation  for this release, so we are providing only tapes with the
+complete system at this time.
+
+     The enclosed information is designed to serve two  purposes.
+The first purpose is to acquaint you with the details of our dis-
+tribution so you can decide whether you would like to receive it.
+The second purpose is to tell you how to obtain our distribution.
+
+What is 4.3BSD-Reno?
+
+     The distribution consists of one 6250 bpi or three 1600  bpi
+magnetic tapes containing full sources and documentation plus one
+set of binaries.  You may specify VAX  and/or  Tahoe  (CCI  Power
+6/32) binaries.
+
+     The three major new facilities available in the  4.3BSD-Reno
+release  are the addition of ISO/OSI networking support, a freely
+redistributable implementation of NFS, and the conversion to  and
+addition  of  the  POSIX.1  facilities.  There are numerous other
+changes throughout the system.
+
+     The ISO/OSI Networking consists of a  kernel  implementation
+of  transport  class 4 (TP-4), connectionless networking protocol
+(CLNP), and 802.3-based link-level  support  (hardware-compatible
+with Ethernet*).  The session and  presentation  layers  will  be
+provided  outside  the  kernel by the ISO development environment
+(ISODE).  Included  in  this  development  environment  are  file
+transfer  and management (FTAM), virtual terminals (VT), a direc-
+tory services implementation  (X.500),  and  miscellaneous  other
+utilities.
+
+     A new virtual filesystem interface has  been  added  to  the
+kernel to support multiple filesystems.  Although generally simi-
+lar to Sun's vnode interface, the  Berkeley  interface  has  been
+structured  for  more efficient support of filesystems that main-
+tain state (such as the local filesystem).  In  addition  to  the
+local ``fast filesystem'', we have added an implementation of the
+network filesystem (NFS) that fully interoperates  with  the  NFS
+shipped by Sun and its licensees.  Because our NFS implementation
+was  implemented  using   only   the   publicly   available   NFS
+specification, it does not require a license from Sun to  use  in
+source  or binary form.  By default it runs over UDP to be compa-
+tible with Sun's implementation.  However, it can  be  configured
+on  a per-mount basis to run over TCP.  Using TCP allows it to be
+used quickly and efficiently through gateways and over  long-haul
+networks.  We have also added a memory-based filesystem that runs
+in pageable memory,  which  allows  large  temporary  filesystems
+without requiring dedicated physical memory.
+
+     The quota system has been rewritten to support both user and
+group  quotas  (simultaneously  if desired).  Quota expiration is
+based on time rather than the previous metric of number of logins
+over  quota.  This change makes quotas more useful on fileservers
+onto which users seldom login.
+
+     The 4.3BSD-Reno distribution contains most of the interfaces
+specified  in the POSIX.1 system interface standard.  The biggest
+area of change is a new terminal driver.  The terminal driver  is
+similar  to the System V terminal driver with the addition of the
+necessary extensions to get the functionality  previously  avail-
+able  in  the  4.3BSD terminal driver.  4.3BSD-Reno also adds the
+POSIX job control interface, which is similar to the  4.3BSD  job
+control  interface, but adds a security model that was missing in
+the 4.3BSD job control implementation.  Other  additions  include
+POSIX  signals, FIFO's, and saved user and group identifiers.  We
+have been tracking the POSIX shell  and  utility  work  and  have
+included  prototypes of many of the proposed utilities.  Finally,
+we have converted about 80% of the libraries and header files  to
+be compliant with ANSI C.
+
+     Work has also progressed in several  other  areas.   Several
+important  enhancements  have  been added to the TCP/IP protocols
+including TCP header prediction and serial line  IP  (SLIP)  with
+header  compression.   The  routing  implementation has been com-
+pletely rewritten to use a hierarchical routing tree with a  mask
+per route to support the arbitrary levels of routing found in the
+ISO protocols.  The routing table also stores  and  caches  route
+characteristics  to  speed  the  adaptation of the throughput and
+congestion avoidance algorithms.
+
+     The Kerberos (version 4) authentication  software  has  been
+integrated  into  much  of the system (except NFS) to provide the
+first real network authentication on BSD.
+
+     The hardware supported by 4.3BSD-Reno is:
+
++    VAX (86x0, 78x, 750, 730; MicroVAX II, 3200/3500/3600; 82x0)
+
++    Tahoe (CCI Power 6/32, 6/32SX; Unisys 7000/xx; Harris  HCX7,
+     HCX9)
+
++    HP 9000/300 series
+
+In addition, kernel support for the Intel i386  and  many  AT-bus
+peripherals  has  been  added  recently; contact the distribution
+office for a list of supported hardware if necessary.
+
+For this distribution, binaries will be available  for  only  the
+VAX  and Tahoe architectures.  The 4.4BSD distribution will prob-
+ably be available for all the  above  architectures  as  well  as
+several machines based on the MIPS processor.
+
+     The reason that this distribution  is  not  labeled  4.4BSD-
+alpha  is  because  it  does not contain several major interfaces
+that we plan to have  available  for  that  distribution.   These
+include:
+
+  +    A  new  virtual  memory  system  using  the  mmap  interface
+  described  in  the 4.3BSD architecture document.  The inter-
+  face is similar to the interface shipped in several  commer-
+  cial versions of UNIX such as SunOS 4.0.
+
+  +    Support for ISO Connection-Oriented Network  Service,  X.25,
+   TP-0.
+
+  +    A new internal  network  layering  (``bstreams'')  combining
+  features of the current socket layering and of Streams.
+
+  +    Fixes, tuning, fixes, documentation, and fixes.
+
+     This release does include several important structural  ker-
+nel  changes.  The most pervasive change is to eliminate the user
+structure fields u.u_error, u.u_u_r.r_val1, and u.u_ap by using a
+new internal system call convention:
+error = (*callp)(proc, args, retval);
+
+We are also reducing the use of other global variables  with  the
+intent  to  eventually  eliminate all references to the user area
+except for the per-process runtime stack.   Thus,  all  substruc-
+tures will eventually be referenced via the proc structure.
+
+     Another major change is the  introduction  of  a  new  sleep
+interface:
+error = tsleep(wchan, pri|PCATCH, wstring, timeout);
+
+The old sleep interface can be used  only  for  non-interruptible
+sleeps.  The tsleep interface can be used at any priority, but is
+only interruptible if the PCATCH flag is set.  When  interrupted,
+tsleep   returns   EINTR   or   ERESTART;  all  non-local  goto's
+(longjmp's) have been eliminated from the kernel.
+
+     Many data structures that were previously  statically  allo-
+cated  are  now  allocated dynamically.  These structures include
+the mount table, the vnode table, the name cache, and  the  quota
+structures.
+
+How to obtain the 4.3BSD-Reno release
+
+     All previous 4.3BSD licensees will be able  to  receive  the
+4.3BSD Reno release simply by executing the steps outlined below.
+4.2BSD licensees who have not yet  upgraded  to  4.3BSD  will  be
+required  to  do so as well as following the steps outlined below
+for the Reno distribution.  For further information  on  ordering
+the standard 4.3BSD distribution, contact our distribution office
+at the address given below.
+
+     Because we are a research and development  organization  and
+not  a  commercial  organization,  we  make  our research results
+available for a fee which covers only our costs for the distribu-
+tion.   We distribute only the whole system and cannot send indi-
+vidual pieces of the system.  Because the software is distributed
+``As Is'' and is partially derived from licensed material, we are
+required to have a formal license arrangement with each organiza-
+tion to which we distribute.
+
+     Specifically, we must receive  from  your  organization  the
+following material before the distribution can be sent:
+
++    Two appropriate signed Addenda for the Reno distribution  if
+     you  are  a  4.3BSD  licensee.  Add  to that the appropriate
+     Addendum to receive the upgrade if you are a  4.2BSD  licen-
+     see.  For new licensees, two executed copies of the Berkeley
+     License Agreement  (4/86)  with  the  appropriate  Addendum,
+     i.e.,  for foreign or US government sites, plus the Addendum
+     for the Reno distribution.  We require  two  copies  of  all
+     Agreements/Addenda with original signatures, one of which is
+     returned to the Licensee.  The name of the  organization  on
+     the  Addendum  No.  Three  must  be  the  same as that which
+     appears on the Software  Agreement  with  AT&T  (or  Western
+     Electric).  The  Addendum No. Three must be signed by a duly
+     authorized person who holds a position that is at  the  same
+     level  or  a higher level of authority as that which appears
+     on the AT&T Software Agreement. Please  have  this  person's
+     name  and  title typed in the available space in addition to
+     the signature.
+
++    A check from a U.S. bank for $495.00 U.S. (for a single 6250
+     BPI  tape  of  4.3BSD-Reno)  or  $595.00 (for three 1600 BPI
+     tapes of  4.3BSD-Reno)  payable  to  ``The  Regents  of  the
+     University  of California'' must be received before the dis-
+     tribution can be sent.  If you must issue a Purchase  Order,
+     please  issue one that is blank-backed.  If this is not pos-
+     sible, insert and initialize in the  body  of  the  Purchase
+     Order  the  following  clause: ``The terms and conditions of
+     this Purchase Order are not accepted by The Regents  of  the
+     University  of  California.   The  revised  Berkeley License
+     Agreement (4/86) governs.''  For  4.2  licensees  that  have
+     updated  to 4.3BSD, substitute ``The terms and conditions of
+     this Purchase Order are not accepted by The Regents  of  the
+     University  of  California.   The  revised  Berkeley License
+     Agreement (6/83) and Addendum Number Three govern.''
+
++    A completed Site Information Form.  The distribution  itself
+     will be sent to the technical contact.  The site information
+     is kept confidential and is for our use in identifying sites
+     with  specific  configurations.   Please note that we cannot
+     ship to post office boxes; therefore, please have the techn-
+     ical contact's address supplied without use of a post office
+     box.
+
+     A checklist is  included  to  aid  you  in  assembling  this
+material.  All the above material must be sent to:
+
+        Distribution Coordinator
+        Computer Systems Research Group
+        Computer Science Division, EECS
+        University of California
+        Berkeley, California 94720
+
+Once all these items have been received and are in proper  order,
+the  distribution will be sent to the technical address indicated
+on the Site Information Form that you provided  when  you  placed
+your  order; we cannot provide delivery dates.  Once the material
+is assembled and packaged, the distribution is shipped by commer-
+cial carrier.  Order of shipment will be based on time of arrival
+of the properly completed paperwork.  Because of the differential
+in  costs  of  shipping  outside  the  United States, we ask that
+organizations beyond the North American continent pay the collect
+shipping charges.
+
+     The most expedient way to insure that your full distribution
+is  sent as quickly as possible is to include in a single package
+the signed appropriate Addenda  (without  modification)  for  the
+Reno  distribution  plus any other necessary signed legal papers,
+depending on your licensing status, the appropriate  check  prop-
+erly made out to ``The Regents of the University of California,''
+and a completely filled-out Site Information Form,  and  to  send
+this single package to the address noted above.
+
+Large Organizations
+
+     Many large organizations have  multiple  entities  that  act
+independently  from  one  another  and are licensed independently
+from AT&T.  Others have the parent organization licensed by  AT&T
+and  copies of the software distribution sent to each independent
+entity. The Berkeley License Agreement must be executed with  the
+organization holding the appropriate AT&T Software Agreement.
+
+     If your organization has an AT&T license and chooses not  to
+redistribute  internally,  please  contact  us  for a copy of the
+letter of authorization to be executed by the parent company.
+
+Special Cases
+
+     University of California Sites.  If you are a  part  of  the
+University  of California, and do not already have an AT&T source
+license for your CPU, you must use the following  procedure:  ask
+Pam  True  (415)  642-6348 at Berkeley Campus Materiel Management
+for an application for an additional CPU authorization under  The
+Regents of the University of California's Software Agreement with
+AT&T.  We will receive the completed  application  from  Materiel
+Management.   If  you have previously obtained a Berkeley License
+for your CPU or have an AT&T source license for your CPU, you  do
+not need to contact the Materiel Management Office.
+
+     In all cases, the following items must be sent to  the  Com-
+puter  Systems Research Group: 1) a letter signed by the Director
+or Head of Department requesting 4.3BSD-Reno,  stating  that  you
+have  read and understood the Berkeley License Agreement and that
+your organization will abide by it, 2)  an  IOC  for  $495.00  or
+$595.00 (1600 BPI), and 3) a Site Information Form if the contact
+information has changed.
+
+     DARPA Sites.  The research on which  the  Berkeley  Software
+Distributions  are  based  has  been  sponsored by DARPA (Defense
+Advanced Research Projects Agency).  Provision has been made  for
+prepayment  of  distribution  costs  for  a  few designated DARPA
+sites.  In place of the check for $495.00 or $595.00, you  should
+include  a  letter from your Program Manager stating that you are
+designated as such a site.  However, you  must  comply  with  all
+other requirements in applying for the distribution.
+
+A Special Note
+
+     The procedures and  rules  set  out  in  this  document  are
+University  and  AT&T  constraints that must be followed in order
+for the distribution of software to be  possible.   The  Computer
+Systems  Research Group has no control over these constraints and
+must reject your application if  material  submitted  is  not  in
+order.
+
+If You Have Read Everything and Still Need Help
+
+     If you have questions  about  the  licensing  process  after
+reading this letter, you may call the distribution group at (415)
+642-7780, write to them at the address above, or contact them via
+electronic mail at bsd-dist@Berkeley.EDU or ucbvax!bsd-dist. They
+will not be able to answer technical questions.
+
+
+                         Sincerely yours,
+
+                         Mike Karels
+                         Computer Systems Research Group
+                         July 6, 1990
